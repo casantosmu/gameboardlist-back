@@ -1,15 +1,7 @@
 import { NextFunction, Response } from "express";
 import User from "../../database/models/User";
-import { CustomRequest } from "../../types/interfaces";
+import { CustomRequest, UserRegister } from "../../types/interfaces";
 import CustomError from "../../utils/CustomError";
-
-interface UserRegister {
-  user: {
-    name: string;
-    email: string;
-    password: string;
-  };
-}
 
 const register = async (
   req: CustomRequest<UserRegister>,
