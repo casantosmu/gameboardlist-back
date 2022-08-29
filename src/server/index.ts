@@ -9,4 +9,8 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.disable("x-powered-by");
 
+app.get("/", (_, res) => {
+  res.send("Hello World!");
+});
+
 export default app;
