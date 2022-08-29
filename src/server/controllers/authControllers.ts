@@ -1,41 +1,24 @@
 import { NextFunction, Response } from "express";
 import User from "../../database/models/User";
-import { CustomRequest } from "../../types/interfaces";
+import { CustomRequest, UserRegister } from "../../types/interfaces";
 import CustomError from "../../utils/CustomError";
-
-interface UserRegister {
-  user: {
-    name: string;
-    email: string;
-    password: string;
-  };
-}
 
 const register = async (
   req: CustomRequest<UserRegister>,
   res: Response,
   next: NextFunction
 ) => {
-  const { body } = req;
-
-  try {
-    if (!body.user.name || !body.user.email || !body.user.password) {
-      throw new CustomError(400, "Please provide all details");
-    }
-  } catch (error) {
-    next(error);
-    return;
-  }
-
   const {
-    user: { name, email, password },
-  } = body;
+    body: {
+      user: { name, email, password },
+    },
+  } = req;
 
   try {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      throw new CustomError(400, `'A user with this this email already exists`);
+      throw new CustomError(400, "A user with this this email already exists");
     }
   } catch (error) {
     next(error);
@@ -56,7 +39,7 @@ const register = async (
     if (error.name === "ValidationError") {
       responseError = new CustomError(
         400,
-        "Could not create user due to some invalid fields!",
+        "Could not create user due to some invalid fields",
         error.message
       );
     }
