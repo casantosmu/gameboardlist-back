@@ -16,20 +16,11 @@ const register = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { body } = req;
-
-  try {
-    if (!body.user.name || !body.user.email || !body.user.password) {
-      throw new CustomError(400, "Please provide all details");
-    }
-  } catch (error) {
-    next(error);
-    return;
-  }
-
   const {
-    user: { name, email, password },
-  } = body;
+    body: {
+      user: { name, email, password },
+    },
+  } = req;
 
   try {
     const userExists = await User.findOne({ email });
