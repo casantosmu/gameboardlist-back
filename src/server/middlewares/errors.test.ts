@@ -76,7 +76,7 @@ describe("Given a generalError middleware", () => {
 
     test("Then it should call the response json method with the 'General error' message", () => {
       const expectedError = {
-        error: "General error",
+        error: "Internal server error",
       };
 
       const error = new Error();

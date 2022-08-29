@@ -17,7 +17,7 @@ export const generalError = (
   next: NextFunction
 ) => {
   const status = error.status ?? 500;
-  const publicMessage = error.publicMessage ?? "General error";
+  const publicMessage = error.publicMessage ?? "Internal server error";
   const privateMessage = error.privateMessage ?? error.message;
 
   debug(chalk.red(privateMessage));
