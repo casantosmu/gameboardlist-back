@@ -35,7 +35,7 @@ const register = async (
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      throw new CustomError(400, `'A user with this this email already exists`);
+      throw new CustomError(400, "A user with this this email already exists");
     }
   } catch (error) {
     next(error);
@@ -56,7 +56,7 @@ const register = async (
     if (error.name === "ValidationError") {
       responseError = new CustomError(
         400,
-        "Could not create user due to some invalid fields!",
+        "Could not create user due to some invalid fields",
         error.message
       );
     }
