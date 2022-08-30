@@ -1,7 +1,6 @@
 import { Response } from "express";
 import User from "../../database/models/User";
 import { CustomRequest, UserRegister } from "../../types/interfaces";
-import CustomError from "../../utils/CustomError";
 import registerUser from "./usersControllers";
 
 describe("Given a registerUser middleware", () => {
@@ -75,40 +74,6 @@ describe("Given a registerUser middleware", () => {
         );
 
         expect(res.json).toHaveBeenCalledWith(expectedMessage);
-      });
-    });
-  });
-
-  describe("When it recives a response with invalid data and a next function", () => {
-    describe("And User.create() throws a ValidationError", () => {
-      test("Then it should call the next function with a Custom Error", async () => {
-        const req = {
-          body: {
-            user: {},
-          },
-        } as Partial<CustomRequest<UserRegister>>;
-        const res = {};
-        const next = jest.fn();
-
-        User.findOne = jest.fn().mockReturnValue(null);
-        User.create = jest
-          .fn()
-          .mockRejectedValue(new CustomError(0, "", "", "ValidationError"));
-
-        const expectedError = {
-          publicMessage: "Could not create user due to some invalid fields",
-          status: 400,
-        };
-
-        await registerUser(
-          req as CustomRequest<UserRegister>,
-          res as Response,
-          next
-        );
-
-        expect(next).toHaveBeenCalledWith(
-          expect.objectContaining(expectedError)
-        );
       });
     });
   });
