@@ -3,7 +3,7 @@ import User from "../../database/models/User";
 import { CustomRequest, UserRegister } from "../../types/interfaces";
 import CustomError from "../../utils/CustomError";
 
-const register = async (
+const registerUser = async (
   req: CustomRequest<UserRegister>,
   res: Response,
   next: NextFunction
@@ -48,4 +48,4 @@ const register = async (
   }
 };
 
-export default register;
+export default registerUser;

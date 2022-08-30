@@ -2,9 +2,9 @@ import { Response } from "express";
 import User from "../../database/models/User";
 import { CustomRequest, UserRegister } from "../../types/interfaces";
 import CustomError from "../../utils/CustomError";
-import register from "./authControllers";
+import registerUser from "./usersControllers";
 
-describe("Given a register middleware", () => {
+describe("Given a registerUser middleware", () => {
   describe("When it recives a response and next function", () => {
     describe("And User.findOne() returns an user", () => {
       test("Then it should call next function with a custom error", async () => {
@@ -25,7 +25,7 @@ describe("Given a register middleware", () => {
           publicMessage: "A user with this this email already exists",
         };
 
-        await register(req, res as Response, next);
+        await registerUser(req, res as Response, next);
 
         expect(next).toHaveBeenCalledWith(
           expect.objectContaining(expectedError)
@@ -53,7 +53,7 @@ describe("Given a register middleware", () => {
         User.findOne = jest.fn().mockReturnValue(null);
         User.create = jest.fn().mockReturnValue({});
 
-        await register(
+        await registerUser(
           req as CustomRequest<UserRegister>,
           res as Response,
           next
@@ -68,7 +68,7 @@ describe("Given a register middleware", () => {
         User.findOne = jest.fn().mockReturnValue(null);
         User.create = jest.fn().mockReturnValue({});
 
-        await register(
+        await registerUser(
           req as CustomRequest<UserRegister>,
           res as Response,
           next
@@ -100,7 +100,7 @@ describe("Given a register middleware", () => {
           status: 400,
         };
 
-        await register(
+        await registerUser(
           req as CustomRequest<UserRegister>,
           res as Response,
           next
