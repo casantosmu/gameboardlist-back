@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
+import { errors, ValidationError } from "express-validation";
 import CustomError from "../../utils/CustomError";
 import { generalError, notFoundError } from "./errors";
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe("Given a notFoundError middleware", () => {
   describe("When receives a response object", () => {
@@ -37,7 +42,7 @@ describe("Given a generalError middleware", () => {
   const next = () => {};
 
   describe("When it receives an error with status 403", () => {
-    describe("Then it should call the response status method with the received status", () => {
+    test("Then it should call the response status method with the received status", () => {
       const expectedStatus = 403;
 
       const error = new CustomError(expectedStatus, "");
@@ -46,32 +51,32 @@ describe("Given a generalError middleware", () => {
 
       expect(res.status).toHaveBeenCalledWith(expectedStatus);
     });
+  });
 
-    describe("When it receives an error with 'Public' as public message", () => {
-      test("Then it should call the response json method with the received message", () => {
-        const publicMessage = "Public";
-        const expectedError = {
-          error: publicMessage,
-        };
+  describe("When it receives an error with 'Public' as public message", () => {
+    test("Then it should call the response json method with the received message", () => {
+      const publicMessage = "Public";
+      const expectedError = {
+        error: publicMessage,
+      };
 
-        const error = new CustomError(0, publicMessage);
+      const error = new CustomError(0, publicMessage);
 
-        generalError(error, req, res as Response, next);
+      generalError(error, req, res as Response, next);
 
-        expect(res.json).toHaveBeenCalledWith(expectedError);
-      });
+      expect(res.json).toHaveBeenCalledWith(expectedError);
     });
+  });
 
-    describe("When it receives an error", () => {
-      describe("Then it should call the response status method with 500 status", () => {
-        const expectedStatus = 500;
+  describe("When it receives an error", () => {
+    test("Then it should call the response status method with 500 status", () => {
+      const expectedStatus = 500;
 
-        const error = new Error();
+      const error = new Error();
 
-        generalError(error as CustomError, req, res as Response, next);
+      generalError(error as CustomError, req, res as Response, next);
 
-        expect(res.status).toHaveBeenCalledWith(expectedStatus);
-      });
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
     });
 
     test("Then it should call the response json method with the 'General error' message", () => {
@@ -82,6 +87,31 @@ describe("Given a generalError middleware", () => {
       const error = new Error();
 
       generalError(error as CustomError, req, res as Response, next);
+
+      expect(res.json).toHaveBeenCalledWith(expectedError);
+    });
+  });
+
+  describe("When it receives a valition error", () => {
+    const error = new ValidationError(
+      { body: [{ message: "error" }] } as errors,
+      {}
+    );
+
+    test("Then it should call the response status method with 400 status", () => {
+      const expectedStatus = 400;
+
+      generalError(error as unknown as CustomError, req, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+    });
+
+    test("Then it should call the response json method with the 'Invalid data' message", () => {
+      const expectedError = {
+        error: "Invalid data",
+      };
+
+      generalError(error as unknown as CustomError, req, res as Response, next);
 
       expect(res.json).toHaveBeenCalledWith(expectedError);
     });
