@@ -1,0 +1,42 @@
+{
+  "info": {
+    "_postman_id": "1d88e997-da8a-4acc-9b5a-49ba96ede79a",
+    "name": "BoardGameList",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22257760"
+  },
+  "item": [
+    {
+      "name": "Register user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"user\": {\r\n    \"name\": \"feeff\",\r\n    \"password\": \"fffffew\",\r\n    \"email\": \"prueba\"\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{REMOTE}}/auth/register",
+          "host": ["{{REMOTE}}"],
+          "path": ["auth", "register"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "REMOTE",
+      "value": "https://csantos-final-project-202207.herokuapp.com"
+    },
+    {
+      "key": "LOCAL",
+      "value": "http://localhost:4000"
+    }
+  ]
+}
