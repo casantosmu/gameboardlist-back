@@ -3,20 +3,27 @@ import User from "../../database/models/User";
 import { CustomRequest, UserRegister } from "../../types/interfaces";
 import registerUser from "./usersControllers";
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("Given a registerUser middleware", () => {
   describe("When it recives a response and next function", () => {
+    const req = {
+      body: {
+        user: {
+          email: "some@email.com",
+        },
+      },
+    } as CustomRequest<UserRegister>;
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as Partial<Response>;
+    const next = jest.fn();
+
     describe("And User.findOne() returns an user", () => {
       test("Then it should call next function with a custom error", async () => {
-        const req = {
-          body: {
-            user: {
-              email: "some@email.com",
-            },
-          },
-        } as CustomRequest<UserRegister>;
-        const res = {} as Partial<Response>;
-        const next = jest.fn();
-
         User.findOne = jest.fn().mockReturnValue("something");
 
         const expectedError = {
@@ -31,21 +38,8 @@ describe("Given a registerUser middleware", () => {
         );
       });
     });
-  });
 
-  describe("When it recives a response with valid data", () => {
     describe("And User.create() returns a user", () => {
-      const req = {
-        body: {
-          user: {},
-        },
-      };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      } as Partial<Response>;
-      const next = () => {};
-
       test("Then it should call the response method with a status 200", async () => {
         const expectedStatus = 200;
 
@@ -74,6 +68,23 @@ describe("Given a registerUser middleware", () => {
         );
 
         expect(res.json).toHaveBeenCalledWith(expectedMessage);
+      });
+    });
+
+    describe("And User.create() throws an error", () => {
+      test("Then it should call the next function with an error", async () => {
+        const error = new Error();
+
+        User.findOne = jest.fn().mockReturnValue(null);
+        User.create = jest.fn().mockRejectedValue(error);
+
+        await registerUser(
+          req as CustomRequest<UserRegister>,
+          res as Response,
+          next
+        );
+
+        expect(next).toHaveBeenCalledWith(error);
       });
     });
   });
