@@ -34,17 +34,7 @@ const registerUser = async (
 
     res.status(200).json({ sucess: "User has been registered" });
   } catch (error) {
-    let responseError = error;
-
-    if (error.name === "ValidationError") {
-      responseError = new CustomError(
-        400,
-        "Could not create user due to some invalid fields",
-        error.message
-      );
-    }
-
-    next(responseError);
+    next(error);
   }
 };
 
