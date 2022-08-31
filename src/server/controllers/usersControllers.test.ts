@@ -40,8 +40,8 @@ describe("Given a registerUser middleware", () => {
     });
 
     describe("And User.create() returns a user", () => {
-      test("Then it should call the response method with a status 200", async () => {
-        const expectedStatus = 200;
+      test("Then it should call the response method with a status 201", async () => {
+        const expectedStatus = 201;
 
         User.findOne = jest.fn().mockReturnValue(null);
         User.create = jest.fn().mockReturnValue({});

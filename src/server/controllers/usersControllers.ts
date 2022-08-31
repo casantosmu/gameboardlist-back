@@ -32,7 +32,7 @@ const registerUser = async (
       password,
     });
 
-    res.status(200).json({ sucess: "User has been registered" });
+    res.status(201).json({ sucess: "User has been registered" });
   } catch (error) {
     next(error);
   }
