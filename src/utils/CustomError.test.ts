@@ -24,12 +24,11 @@ describe("Given a CustomError class", () => {
   describe("When its instantiated with 'Public' as public message", () => {
     test("Then it should have the public and private message property with 'Public'", () => {
       const expectedMessage = "Public";
-      const expectedPublicMessage = expectedMessage;
-      const expectedPrivateMessage = expectedMessage;
 
       const customError = new CustomError(0, expectedMessage);
-      expect(customError.publicMessage).toBe(expectedPublicMessage);
-      expect(customError.privateMessage).toBe(expectedPrivateMessage);
+
+      expect(customError.publicMessage).toBe(expectedMessage);
+      expect(customError.privateMessage).toBe(expectedMessage);
     });
   });
 
