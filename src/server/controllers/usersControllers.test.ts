@@ -1,7 +1,11 @@
 import { Response } from "express";
 import User from "../../database/models/User";
-import { CustomRequest, UserRegister } from "../../types/interfaces";
-import registerUser from "./usersControllers";
+import {
+  CustomRequest,
+  UserRegister,
+  UserRequest,
+} from "../../types/interfaces";
+import { registerUser } from "./usersControllers";
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -27,11 +31,11 @@ describe("Given a registerUser middleware", () => {
           ...user,
           password: "hashed",
         };
-        const req: CustomRequest<UserRegister> = {
+        const req = {
           body: {
             user,
           },
-        } as CustomRequest<UserRegister>;
+        } as CustomRequest<UserRequest<UserRegister>>;
         const res = {} as Response;
         const next = () => {};
 
@@ -52,7 +56,7 @@ describe("Given a registerUser middleware", () => {
       body: {
         user: {},
       },
-    } as CustomRequest<UserRegister>;
+    } as CustomRequest<UserRequest<UserRegister>>;
     const res = {} as Response;
     const next = jest.fn();
 
