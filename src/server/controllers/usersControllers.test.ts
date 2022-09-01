@@ -7,67 +7,82 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+let mockGetEncriptedData: Promise<string> | string;
+
+jest.mock("../../utils/authentication", () => ({
+  ...jest.requireActual("../../utils/authentication"),
+  getEncriptedData: () => mockGetEncriptedData,
+}));
+
 describe("Given a registerUser middleware", () => {
-  describe("When it recives a response and next function", () => {
+  describe("When it recives a response with a user", () => {
+    describe("And User.findOne() don't return an user and getEncriptedData returns 'hashed'", () => {
+      test("Then it should call User.create with the user data, but 'hashed' as password", async () => {
+        const user = {
+          name: "name",
+          email: "email",
+          password: "password",
+        };
+        const hashedUser = {
+          ...user,
+          password: "hashed",
+        };
+        const req: CustomRequest<UserRegister> = {
+          body: {
+            user,
+          },
+        } as CustomRequest<UserRegister>;
+        const res = {} as Response;
+        const next = () => {};
+
+        mockGetEncriptedData = hashedUser.password;
+
+        User.findOne = jest.fn().mockReturnValue(null);
+        User.create = jest.fn();
+
+        await registerUser(req, res, next);
+
+        expect(User.create).toHaveBeenCalledWith(hashedUser);
+      });
+    });
+  });
+
+  describe("When it recives a response and a next function", () => {
     const req = {
       body: {
-        user: {
-          email: "some@email.com",
-        },
+        user: {},
       },
     } as CustomRequest<UserRegister>;
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    } as Partial<Response>;
+    const res = {} as Response;
     const next = jest.fn();
 
     describe("And User.findOne() returns an user", () => {
       test("Then it should call next function with a custom error", async () => {
+        const expectedStatus = 400;
+        const expectedPublicMessage = "A user with this email already exists";
+
         User.findOne = jest.fn().mockReturnValue("something");
 
-        const expectedError = {
-          status: 400,
-          publicMessage: "A user with this email already exists",
-        };
+        await registerUser(req, res, next);
 
-        await registerUser(req, res as Response, next);
+        const nextParameter = next.mock.calls[0][0];
 
-        expect(next).toHaveBeenCalledWith(
-          expect.objectContaining(expectedError)
-        );
+        expect(nextParameter.publicMessage).toBe(expectedPublicMessage);
+        expect(nextParameter.status).toBe(expectedStatus);
       });
     });
 
-    describe("And User.create() returns a user", () => {
-      test("Then it should call the response method with a status 201", async () => {
-        const expectedStatus = 201;
+    describe("And getEncriptedData throws an error", () => {
+      test("Then it should call next function with an error", async () => {
+        const error = new Error();
+
+        mockGetEncriptedData = Promise.reject(error);
 
         User.findOne = jest.fn().mockReturnValue(null);
-        User.create = jest.fn().mockReturnValue({});
 
-        await registerUser(
-          req as CustomRequest<UserRegister>,
-          res as Response,
-          next
-        );
+        await registerUser(req, res, next);
 
-        expect(res.status).toHaveBeenCalledWith(expectedStatus);
-      });
-
-      test("Then it should call the json method with a success message", async () => {
-        const expectedMessage = { sucess: "User has been registered" };
-
-        User.findOne = jest.fn().mockReturnValue(null);
-        User.create = jest.fn().mockReturnValue({});
-
-        await registerUser(
-          req as CustomRequest<UserRegister>,
-          res as Response,
-          next
-        );
-
-        expect(res.json).toHaveBeenCalledWith(expectedMessage);
+        await expect(next).toHaveBeenCalledWith(error);
       });
     });
 
@@ -78,11 +93,7 @@ describe("Given a registerUser middleware", () => {
         User.findOne = jest.fn().mockReturnValue(null);
         User.create = jest.fn().mockRejectedValue(error);
 
-        await registerUser(
-          req as CustomRequest<UserRegister>,
-          res as Response,
-          next
-        );
+        await registerUser(req, res, next);
 
         expect(next).toHaveBeenCalledWith(error);
       });
