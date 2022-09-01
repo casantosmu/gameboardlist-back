@@ -1,6 +1,7 @@
 import { NextFunction, Response } from "express";
 import User from "../../database/models/User";
 import { CustomRequest, UserRegister } from "../../types/interfaces";
+import { getEncriptedData } from "../../utils/authentication";
 import CustomError from "../../utils/CustomError";
 
 const registerUser = async (
@@ -25,11 +26,19 @@ const registerUser = async (
     return;
   }
 
+  let encriptedPassword: string;
+  try {
+    encriptedPassword = await getEncriptedData(password);
+  } catch (error) {
+    next(error);
+    return;
+  }
+
   try {
     await User.create({
       name,
       email,
-      password,
+      password: encriptedPassword,
     });
 
     res.status(201).json({ sucess: "User has been registered" });
