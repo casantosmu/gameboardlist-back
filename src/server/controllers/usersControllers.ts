@@ -1,11 +1,21 @@
 import { NextFunction, Response } from "express";
 import User from "../../database/models/User";
-import { CustomRequest, UserRegister } from "../../types/interfaces";
-import { getEncriptedData } from "../../utils/authentication";
+import {
+  CustomRequest,
+  UserLogin,
+  UserPayload,
+  UserRegister,
+  UserRequest,
+} from "../../types/interfaces";
+import {
+  getEncriptedData,
+  getToken,
+  isEqualEncripted,
+} from "../../utils/authentication";
 import CustomError from "../../utils/CustomError";
 
-const registerUser = async (
-  req: CustomRequest<UserRegister>,
+export const registerUser = async (
+  req: CustomRequest<UserRequest<UserRegister>>,
   res: Response,
   next: NextFunction
 ) => {
@@ -47,4 +57,50 @@ const registerUser = async (
   }
 };
 
-export default registerUser;
+export const loginUser = async (
+  req: CustomRequest<UserRequest<UserLogin>>,
+  res: Response,
+  next: NextFunction
+) => {
+  const {
+    body: {
+      user: { email, password },
+    },
+  } = req;
+
+  const customError = new CustomError(400, "Username or password not found");
+
+  let foundUser;
+  try {
+    foundUser = await User.findOne({ email });
+
+    if (foundUser === null) throw customError;
+  } catch (error) {
+    next(error);
+    return;
+  }
+
+  let hashedPassword;
+  try {
+    hashedPassword = await isEqualEncripted(password, foundUser.password);
+
+    if (!hashedPassword) throw customError;
+  } catch (error) {
+    next(error);
+    return;
+  }
+
+  const payload: UserPayload = {
+    id: foundUser.id,
+    name: foundUser.name,
+    email: foundUser.email,
+  };
+
+  const response = {
+    user: {
+      token: getToken(payload),
+    },
+  };
+
+  res.status(200).json(response);
+};
