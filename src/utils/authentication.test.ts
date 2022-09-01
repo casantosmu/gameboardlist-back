@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { getEncriptedData, isEqualEncripted } from "./authentication";
 
 describe("Given a getEncriptedData function", () => {
-  describe("When instantiated", () => {
+  describe("When its invoked", () => {
     test("Then it should return the value returned by invoking bcrypt hash", () => {
       const expectedReturn = "something";
 
@@ -14,7 +14,7 @@ describe("Given a getEncriptedData function", () => {
     });
   });
 
-  describe("When instantiated with 'password' as text and '10' as salt", () => {
+  describe("When its called with 'password' as text and '10' as salt", () => {
     test("Then it should call the bcrypt hash function with the received text and number", () => {
       const text = "password";
       const salt = 10;
@@ -29,7 +29,7 @@ describe("Given a getEncriptedData function", () => {
 });
 
 describe("Given isEqualEncripted function", () => {
-  describe("When instantiated", () => {
+  describe("When invoked", () => {
     test("Then it should return the value returned by invoking bcrypt compare", () => {
       const expectedReturn = "something";
 
@@ -41,7 +41,7 @@ describe("Given isEqualEncripted function", () => {
     });
   });
 
-  describe("When instantiated with 'password' as text and 'encrypt' as encrypted text", () => {
+  describe("When its called with 'password' as text and 'encrypt' as encrypted text", () => {
     test("Then it should call the bcrypt compare function with the received texts", () => {
       const text = "password";
       const encrypted = "encrypt";
