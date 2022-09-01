@@ -28,7 +28,7 @@ describe("Given a registerUser middleware", () => {
 
         const expectedError = {
           status: 400,
-          publicMessage: "A user with this this email already exists",
+          publicMessage: "A user with this email already exists",
         };
 
         await registerUser(req, res as Response, next);
