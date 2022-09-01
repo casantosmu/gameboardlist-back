@@ -1,5 +1,11 @@
 import bcrypt from "bcrypt";
-import { getEncriptedData, isEqualEncripted } from "./authentication";
+import jws from "jsonwebtoken";
+import {
+  getEncriptedData,
+  getToken,
+  isEqualEncripted,
+  isValidToken,
+} from "./authentication";
 
 describe("Given a getEncriptedData function", () => {
   describe("When its invoked", () => {
@@ -51,6 +57,61 @@ describe("Given isEqualEncripted function", () => {
       isEqualEncripted(text, encrypted);
 
       expect(bcrypt.compare).toHaveBeenCalledWith(text, encrypted);
+    });
+  });
+});
+
+describe("Given getToken function", () => {
+  describe("When invoked", () => {
+    test("Then it should return the value returned by invoking jws sign", () => {
+      const fakePayload = { id: "", email: "", name: "" };
+      const expectedReturn = "something";
+
+      jws.sign = jest.fn().mockReturnValue(expectedReturn);
+
+      const returnedValue = getToken(fakePayload);
+
+      expect(returnedValue).toBe(expectedReturn);
+    });
+  });
+
+  describe("When its called with id, email and name", () => {
+    test("Then it should call the jws sign function with the received payload and secret", () => {
+      const payload = { id: "id", email: "@", name: "name" };
+      const secret = process.env.SECRET;
+
+      jws.sign = jest.fn();
+
+      getToken(payload);
+
+      expect(jws.sign).toHaveBeenCalledWith(payload, secret);
+    });
+  });
+});
+
+describe("Given isValidToken function", () => {
+  describe("When invoked", () => {
+    test("Then it should return the value returned by invoking jws verify", () => {
+      const expectedReturn = true;
+
+      jws.verify = jest.fn().mockReturnValue(expectedReturn);
+
+      const returnedValue = isValidToken("");
+
+      expect(returnedValue).toBe(expectedReturn);
+    });
+  });
+
+  describe("When its called with a token", () => {
+    test("Then it should call the jws verify function with the received token", () => {
+      const token = "token";
+      const secret = process.env.SECRET;
+
+      jws.verify = jest.fn();
+
+      isValidToken(token);
+
+      expect(jws.verify).toHaveBeenCalledWith(token, secret);
     });
   });
 });
