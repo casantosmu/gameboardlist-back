@@ -18,7 +18,7 @@ const registerUser = async (
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      throw new CustomError(400, "A user with this this email already exists");
+      throw new CustomError(400, "A user with this email already exists");
     }
   } catch (error) {
     next(error);
