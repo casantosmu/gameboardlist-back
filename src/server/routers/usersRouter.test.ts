@@ -27,7 +27,7 @@ afterEach(async () => {
 describe("Given a /users/register route", () => {
   describe("When requested with a post method and valid data", () => {
     describe("And User.finOne() not returns an user", () => {
-      test("Then it should respond with a status of 200", async () => {
+      test("Then it should respond with a status of 201", async () => {
         const expectedStatus = 201;
 
         const res = await request(app)
@@ -61,7 +61,7 @@ describe("Given a /users/register route", () => {
     });
 
     describe("And User.finOne() returns a previously registered user", () => {
-      test("Then it should respond with a status of 200", async () => {
+      test("Then it should respond with a status of 400", async () => {
         const expectedStatus = 400;
 
         await request(app)
