@@ -1,21 +1,28 @@
+import "../../loadEnvironment";
 import { Response } from "express";
 import User from "../../database/models/User";
 import {
   CustomRequest,
+  UserLogin,
+  UserPayload,
   UserRegister,
   UserRequest,
 } from "../../types/interfaces";
-import { registerUser } from "./usersControllers";
+import { loginUser, registerUser } from "./usersControllers";
 
 afterEach(() => {
   jest.clearAllMocks();
 });
 
 let mockGetEncriptedData: Promise<string> | string;
+let mockIsEqualEncripted: boolean;
+let mockGetToken: (payload: UserPayload) => string;
 
 jest.mock("../../utils/authentication", () => ({
   ...jest.requireActual("../../utils/authentication"),
   getEncriptedData: () => mockGetEncriptedData,
+  isEqualEncripted: () => mockIsEqualEncripted,
+  getToken: (payload: UserPayload) => mockGetToken(payload),
 }));
 
 describe("Given a registerUser middleware", () => {
@@ -100,6 +107,108 @@ describe("Given a registerUser middleware", () => {
         await registerUser(req, res, next);
 
         expect(next).toHaveBeenCalledWith(error);
+      });
+    });
+  });
+});
+
+describe("Given a loginUser middleware", () => {
+  const req = {
+    body: {
+      user: {
+        email: "",
+        password: "",
+      },
+    },
+  } as CustomRequest<UserRequest<UserLogin>>;
+  const next = jest.fn();
+
+  describe("When it recives a response function", () => {
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as Partial<Response>;
+
+    describe("And User.findOne returns an user and isEqualEncripted returns true", () => {
+      test("Then it should call getToken with the found user id, name and email", async () => {
+        const user: UserPayload = {
+          id: "id",
+          email: "email",
+          name: "name",
+        };
+
+        User.findOne = jest.fn().mockResolvedValue(user);
+        mockIsEqualEncripted = true;
+        mockGetToken = jest.fn();
+
+        await loginUser(req, res as Response, next);
+
+        expect(mockGetToken).toHaveBeenCalledWith(user);
+      });
+
+      describe("And getToken returns 'token'", () => {
+        test("Then it should call the respose status method with a 200", async () => {
+          const expectedStatus = 200;
+
+          User.findOne = jest.fn().mockResolvedValue("some");
+          mockIsEqualEncripted = true;
+
+          await loginUser(req, res as Response, next);
+
+          expect(res.status).toHaveBeenCalledWith(expectedStatus);
+        });
+
+        test("Then it should call the respose json method with 'token'", async () => {
+          const token = "token";
+          const expetedJson = {
+            user: {
+              token,
+            },
+          };
+
+          User.findOne = jest.fn().mockResolvedValue("some");
+          mockIsEqualEncripted = true;
+          mockGetToken = jest.fn().mockReturnValue(token);
+
+          await loginUser(req, res as Response, next);
+
+          expect(res.json).toHaveBeenCalledWith(expetedJson);
+        });
+      });
+    });
+  });
+
+  describe("When it recives a next function and a request", () => {
+    const res = {} as Response;
+
+    const expectedCustomErrorMessage = "Username or password not found";
+
+    describe("And User.findOne do not returns an user", () => {
+      test("Then it should call the next function with a custom error", async () => {
+        User.findOne = jest.fn().mockResolvedValue(null);
+
+        await loginUser(req, res, next);
+
+        const nextParameter = next.mock.calls[0][0];
+
+        expect(nextParameter.status).toBe(400);
+        expect(nextParameter.privateMessage).toBe(expectedCustomErrorMessage);
+        expect(nextParameter.publicMessage).toBe(expectedCustomErrorMessage);
+      });
+    });
+
+    describe("And isEqualEncripted returns it's not true", () => {
+      test("Then it should call the next function with a custom error", async () => {
+        User.findOne = jest.fn().mockResolvedValue("some");
+        mockIsEqualEncripted = false;
+
+        await loginUser(req, res, next);
+
+        const nextParameter = next.mock.calls[0][0];
+
+        expect(nextParameter.status).toBe(400);
+        expect(nextParameter.privateMessage).toBe(expectedCustomErrorMessage);
+        expect(nextParameter.publicMessage).toBe(expectedCustomErrorMessage);
       });
     });
   });
