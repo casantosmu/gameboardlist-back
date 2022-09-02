@@ -26,19 +26,21 @@ afterEach(async () => {
 
 describe("Given a /users/register route", () => {
   describe("When requested with a post method and valid data", () => {
+    const validRequest = {
+      user: {
+        name: "name",
+        password: "password",
+        email: "email",
+      },
+    };
+
     describe("And User.finOne() not returns an user", () => {
       test("Then it should respond with a status of 201", async () => {
         const expectedStatus = 201;
 
         const res = await request(app)
           .post("/users/register")
-          .send({
-            user: {
-              name: "name",
-              password: "password",
-              email: "email",
-            },
-          });
+          .send(validRequest);
 
         expect(res.statusCode).toBe(expectedStatus);
       });
@@ -48,13 +50,7 @@ describe("Given a /users/register route", () => {
 
         const res = await request(app)
           .post("/users/register")
-          .send({
-            user: {
-              name: "name",
-              password: "password",
-              email: "email",
-            },
-          });
+          .send(validRequest);
 
         expect(res.body).toStrictEqual(expectedBody);
       });
@@ -64,25 +60,11 @@ describe("Given a /users/register route", () => {
       test("Then it should respond with a status of 400", async () => {
         const expectedStatus = 400;
 
-        await request(app)
-          .post("/users/register")
-          .send({
-            user: {
-              name: "name",
-              password: "password",
-              email: "email",
-            },
-          });
+        await request(app).post("/users/register").send(validRequest);
 
         const res = await request(app)
           .post("/users/register")
-          .send({
-            user: {
-              name: "name",
-              password: "password",
-              email: "email",
-            },
-          });
+          .send(validRequest);
 
         expect(res.statusCode).toBe(expectedStatus);
       });
@@ -92,25 +74,11 @@ describe("Given a /users/register route", () => {
           error: "A user with this email already exists",
         };
 
-        await request(app)
-          .post("/users/register")
-          .send({
-            user: {
-              name: "name",
-              password: "password",
-              email: "email",
-            },
-          });
+        await request(app).post("/users/register").send(validRequest);
 
         const res = await request(app)
           .post("/users/register")
-          .send({
-            user: {
-              name: "name",
-              password: "password",
-              email: "email",
-            },
-          });
+          .send(validRequest);
 
         expect(res.body).toStrictEqual(expectedBody);
       });
@@ -118,18 +86,20 @@ describe("Given a /users/register route", () => {
   });
 
   describe("When requested with a post method and invalid data", () => {
+    const invalidRequest = {
+      user: {
+        name: "",
+        password: "",
+        email: "",
+      },
+    };
+
     test("Then it should respond with a status of 400", async () => {
       const expectedStatus = 400;
 
       const res = await request(app)
         .post("/users/register")
-        .send({
-          user: {
-            name: "",
-            password: "",
-            email: "",
-          },
-        });
+        .send(invalidRequest);
 
       expect(res.statusCode).toBe(expectedStatus);
     });
@@ -139,13 +109,7 @@ describe("Given a /users/register route", () => {
 
       const res = await request(app)
         .post("/users/register")
-        .send({
-          user: {
-            name: "",
-            password: "",
-            email: "",
-          },
-        });
+        .send(invalidRequest);
 
       expect(res.body).toStrictEqual(expectedBody);
     });

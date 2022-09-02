@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"user\": {\r\n    \"name\": \"feeff\",\r\n    \"password\": \"fffffew\",\r\n    \"email\": \"prueba\"\r\n  }\r\n}",
+          "raw": "{\r\n  \"user\": {\r\n    \"name\": \"efef\",\r\n    \"password\": \"efefefew\",\r\n    \"email\": \"prededfefeede3\"\r\n  }\r\n}   ",
           "options": {
             "raw": {
               "language": "json"
@@ -21,9 +21,31 @@
           }
         },
         "url": {
-          "raw": "{{REMOTE}}/auth/register",
-          "host": ["{{REMOTE}}"],
-          "path": ["auth", "register"]
+          "raw": "{{LOCAL}}/users/register",
+          "host": ["{{LOCAL}}"],
+          "path": ["users", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"user\": {\r\n        \"email\": \"prededfefeede3\",\r\n        \"password\": \"efefefew\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{LOCAL}}/users/login",
+          "host": ["{{LOCAL}}"],
+          "path": ["users", "login"]
         }
       },
       "response": []
