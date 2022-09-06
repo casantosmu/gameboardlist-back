@@ -113,7 +113,7 @@ describe("Given a registerUser middleware", () => {
 
     describe("And User.findOne() returns an user", () => {
       test("Then it should call next function with a custom error", async () => {
-        const expectedStatus = 400;
+        const expectedStatus = 409;
         const expectedPublicMessage = "A user with this email already exists";
 
         User.findOne = jest.fn().mockReturnValue("something");
@@ -225,17 +225,19 @@ describe("Given a loginUser middleware", () => {
   describe("When it recives a next function and a request", () => {
     const res = {} as Response;
 
-    const expectedCustomErrorMessage = "Username or password not found";
+    const expectedCustomErrorMessage = "User or password does not exist";
 
     describe("And User.findOne do not returns an user", () => {
       test("Then it should call the next function with a custom error", async () => {
+        const expectedStatus = 401;
+
         User.findOne = jest.fn().mockResolvedValue(null);
 
         await loginUser(req, res, next);
 
         const nextParameter = next.mock.calls[0][0];
 
-        expect(nextParameter.status).toBe(400);
+        expect(nextParameter.status).toBe(expectedStatus);
         expect(nextParameter.privateMessage).toBe(expectedCustomErrorMessage);
         expect(nextParameter.publicMessage).toBe(expectedCustomErrorMessage);
       });
@@ -243,6 +245,8 @@ describe("Given a loginUser middleware", () => {
 
     describe("And isEqualEncripted returns it's not true", () => {
       test("Then it should call the next function with a custom error", async () => {
+        const expectedStatus = 401;
+
         User.findOne = jest.fn().mockResolvedValue("some");
         mockIsEqualEncripted = false;
 
@@ -250,7 +254,7 @@ describe("Given a loginUser middleware", () => {
 
         const nextParameter = next.mock.calls[0][0];
 
-        expect(nextParameter.status).toBe(400);
+        expect(nextParameter.status).toBe(expectedStatus);
         expect(nextParameter.privateMessage).toBe(expectedCustomErrorMessage);
         expect(nextParameter.publicMessage).toBe(expectedCustomErrorMessage);
       });

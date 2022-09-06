@@ -57,8 +57,8 @@ describe("Given a /users/register route", () => {
     });
 
     describe("And User.finOne() returns a previously registered user", () => {
-      test("Then it should respond with a status of 400", async () => {
-        const expectedStatus = 400;
+      test("Then it should respond with a status of 409", async () => {
+        const expectedStatus = 409;
 
         await request(app).post("/users/register").send(validRequest);
 
