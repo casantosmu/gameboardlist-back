@@ -4,7 +4,7 @@ import {
   getEncriptedData,
   getToken,
   isEqualEncripted,
-  isValidToken,
+  verifyToken,
 } from "./authentication";
 
 describe("Given a getEncriptedData function", () => {
@@ -89,14 +89,14 @@ describe("Given getToken function", () => {
   });
 });
 
-describe("Given isValidToken function", () => {
+describe("Given verifyToken function", () => {
   describe("When invoked", () => {
     test("Then it should return the value returned by invoking jws verify", () => {
       const expectedReturn = true;
 
       jws.verify = jest.fn().mockReturnValue(expectedReturn);
 
-      const returnedValue = isValidToken("");
+      const returnedValue = verifyToken("");
 
       expect(returnedValue).toBe(expectedReturn);
     });
@@ -109,7 +109,7 @@ describe("Given isValidToken function", () => {
 
       jws.verify = jest.fn();
 
-      isValidToken(token);
+      verifyToken(token);
 
       expect(jws.verify).toHaveBeenCalledWith(token, secret);
     });
