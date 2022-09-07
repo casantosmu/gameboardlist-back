@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import { generalError, notFoundError } from "./middlewares/errors";
 import usersRouter from "./routers/usersRouter";
+import gameboardsRouter from "./routers/gameboardsRouter";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(morgan("dev"));
 app.disable("x-powered-by");
 
 app.use("/users", usersRouter);
+app.use("/gameboards", gameboardsRouter);
 
 app.use(notFoundError);
 app.use(generalError);
