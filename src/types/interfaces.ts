@@ -29,7 +29,6 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  gameboards: Gameboards;
 }
 
 export interface Gameboard {
