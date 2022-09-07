@@ -39,7 +39,7 @@ export interface Gameboard {
   year: Date;
   category: GameboardsCategories;
   authorship: string;
-  owner: string;
+  createdBy: string;
   players?: MinMax;
   time?: MinMax;
 }
