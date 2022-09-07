@@ -115,7 +115,6 @@ describe("Given a authentication function", () => {
         shomething: "blabla",
       };
 
-      // mockVerifyToken = payload;
       mockVerifyToken = jest.fn().mockReturnValue(payload);
 
       authentication(
@@ -138,7 +137,6 @@ describe("Given a authentication function", () => {
         shomething: "blabla",
       };
 
-      // mockVerifyToken = payload;
       mockVerifyToken = jest.fn().mockReturnValue(payload);
 
       authentication(
