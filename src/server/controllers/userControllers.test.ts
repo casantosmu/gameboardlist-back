@@ -8,7 +8,7 @@ import {
   UserRegister,
   UserRequest,
 } from "../../types/interfaces";
-import { loginUser, registerUser } from "./usersControllers";
+import { loginUser, registerUser } from "./userControllers";
 
 afterEach(() => {
   jest.clearAllMocks();

@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import { User as IUser } from "../../types/interfaces";
 
 const userSchema = new Schema({
   name: {
@@ -20,14 +19,8 @@ const userSchema = new Schema({
     required: true,
     minlength: 6,
   },
-  gameboards: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Gameboard",
-    },
-  ],
 });
 
-const User = model<IUser>("User", userSchema, "users");
+const User = model("User", userSchema, "users");
 
 export default User;

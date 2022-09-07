@@ -29,7 +29,6 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  gameboards: Gameboards;
 }
 
 export interface Gameboard {
@@ -39,7 +38,7 @@ export interface Gameboard {
   year: Date;
   category: GameboardsCategories;
   authorship: string;
-  owner: string;
+  createdBy: string;
   players?: MinMax;
   time?: MinMax;
 }
