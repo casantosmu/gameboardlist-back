@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import { model, Schema } from "mongoose";
+import { Gameboard as IGameboard } from "../../types/interfaces";
 
-const gameboardSchema = new mongoose.Schema({
+const gameboardSchema = new Schema({
   image: {
     type: String,
     default: "/uploads/example.jpeg",
@@ -40,13 +41,13 @@ const gameboardSchema = new mongoose.Schema({
     required: true,
     maxlength: 100,
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
+  owner: {
+    type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
 });
 
-const Gameboard = mongoose.model("Gameboard", gameboardSchema, "gameboards");
+const Gameboard = model<IGameboard>("Gameboard", gameboardSchema, "gameboards");
 
 export default Gameboard;
