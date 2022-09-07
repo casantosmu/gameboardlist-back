@@ -24,3 +24,36 @@ export interface UserPayload {
   name: string;
   email: string;
 }
+
+export interface User {
+  name: string;
+  email: string;
+  password: string;
+  gameboards: Gameboards;
+}
+
+export interface Gameboard {
+  image: string;
+  rating: number;
+  name: string;
+  year: Date;
+  category: GameboardsCategories;
+  authorship: string;
+  owner: string;
+  players?: MinMax;
+  time?: MinMax;
+}
+
+export type Gameboards = Array<Gameboards>;
+
+export type GameboardsCategories =
+  | "party"
+  | "family"
+  | "thematic"
+  | "wargame"
+  | "strategy";
+
+interface MinMax {
+  min: number;
+  max: number;
+}
