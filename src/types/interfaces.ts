@@ -32,18 +32,20 @@ export interface User {
 }
 
 export interface Gameboard {
+  id: string;
   image: string;
   rating: number;
+  weight: number;
   name: string;
   year: Date;
   category: GameboardsCategories;
-  authorship: string;
+  authorship?: string;
   createdBy: string;
-  players?: MinMax;
-  time?: MinMax;
+  players: MinMax;
+  time: MinMax;
 }
 
-export type Gameboards = Array<Gameboards>;
+export type Gameboards = Array<Gameboard>;
 
 export type GameboardsCategories =
   | "party"
