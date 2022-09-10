@@ -7,7 +7,7 @@ export interface Gameboard {
   rating: number;
   weight: number;
   name: string;
-  year: Date;
+  year: number;
   category: GameboardsCategories;
   authorship?: string;
   createdBy: string;
