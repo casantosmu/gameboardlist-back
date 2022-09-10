@@ -1,20 +1,25 @@
 import { Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
+import fakeGameboard from "../../test-utils/fakeGameboard";
 import { UserPayload } from "../../types/user";
-import { getGameboards } from "./gameboardsControllers";
+import { getGameboards, postGameboard } from "./gameboardsControllers";
 
-interface CustomRequest extends Request {
+interface GetRequest extends Request {
   payload: UserPayload;
 }
 
-describe("Given a getGameboards function", () => {
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+describe("Given a getGameboards controller", () => {
   describe("When it recives a request and a response", () => {
     test("Then it should call gameboard.find with id 'ID' from req", async () => {
       const req = {
         payload: {
           id: "ID",
         },
-      } as Partial<CustomRequest>;
+      } as Partial<GetRequest>;
       const res = {} as Response;
       const next = () => {};
 
@@ -24,7 +29,7 @@ describe("Given a getGameboards function", () => {
         createdBy: req.payload.id,
       };
 
-      await getGameboards(req as CustomRequest, res, next);
+      await getGameboards(req as GetRequest, res, next);
 
       expect(Gameboard.find).toHaveBeenCalledWith(expectedQuery);
     });
@@ -35,7 +40,7 @@ describe("Given a getGameboards function", () => {
           payload: {
             id: "",
           },
-        } as Partial<CustomRequest>;
+        } as Partial<GetRequest>;
         const res = {
           status: jest.fn(),
         } as Partial<Response>;
@@ -45,7 +50,7 @@ describe("Given a getGameboards function", () => {
 
         Gameboard.find = jest.fn();
 
-        await getGameboards(req as CustomRequest, res as Response, next);
+        await getGameboards(req as GetRequest, res as Response, next);
 
         expect(res.status).toHaveBeenCalledWith(expectedStatus);
       });
@@ -55,7 +60,7 @@ describe("Given a getGameboards function", () => {
           payload: {
             id: "",
           },
-        } as Partial<CustomRequest>;
+        } as Partial<GetRequest>;
         const res = {
           status: jest.fn().mockReturnThis(),
           json: jest.fn(),
@@ -67,7 +72,7 @@ describe("Given a getGameboards function", () => {
 
         Gameboard.find = jest.fn().mockReturnValue(games);
 
-        await getGameboards(req as CustomRequest, res as Response, next);
+        await getGameboards(req as GetRequest, res as Response, next);
 
         expect(res.json).toHaveBeenCalledWith(expectedGames);
       });
@@ -80,19 +85,98 @@ describe("Given a getGameboards function", () => {
             payload: {
               id: "",
             },
-          } as Partial<CustomRequest>;
-          const res = {} as Partial<Response>;
+          } as Partial<GetRequest>;
+          const res = {} as Response;
           const next = jest.fn();
 
           const error = new Error();
 
           Gameboard.find = jest.fn().mockRejectedValue(error);
 
-          await getGameboards(req as CustomRequest, res as Response, next);
+          await getGameboards(req as GetRequest, res, next);
 
           expect(next).toHaveBeenCalledWith(error);
         });
       });
+    });
+  });
+});
+
+describe("Given a postGambeoard controller", () => {
+  const requestData = {
+    ...fakeGameboard,
+    file: "file",
+    fileBackup: "bakup",
+  };
+  const req = {
+    body: requestData,
+  } as Partial<Request>;
+
+  describe("When it recives a request and a response", () => {
+    test("Then it should call Gameboard create with gameboard, file and backup file from the request body", async () => {
+      const res = {} as Response;
+      const next = () => {};
+
+      const expectedResult = {
+        ...fakeGameboard,
+        image: requestData.file,
+        imageBackup: requestData.fileBackup,
+      };
+
+      Gameboard.create = jest.fn();
+
+      await postGameboard(req as Request, res, next);
+
+      expect(Gameboard.create).toHaveBeenCalledWith(expectedResult);
+    });
+
+    test("Then it should call the response status method with 201", async () => {
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as Partial<Response>;
+      const next = () => {};
+
+      Gameboard.create = jest.fn().mockReturnValue({});
+
+      const expectedStatusCode = 201;
+
+      await postGameboard(req as Request, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
+    });
+
+    test("Then it should call the response json method with a sucess message", async () => {
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as Partial<Response>;
+      const next = () => {};
+
+      const expectedSucessMessage = {
+        sucess: "Boardgame created successfully",
+      };
+
+      Gameboard.create = jest.fn().mockReturnValue({});
+
+      await postGameboard(req as Request, res as Response, next);
+
+      expect(res.json).toHaveBeenCalledWith(expectedSucessMessage);
+    });
+  });
+
+  describe("When it recives a next function and User.create rejects", () => {
+    test("Then it should call next function with the an error", async () => {
+      const res = {} as Response;
+      const next = jest.fn();
+
+      const error = new Error();
+
+      Gameboard.create = jest.fn().mockRejectedValue(error);
+
+      await postGameboard(req as Request, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
