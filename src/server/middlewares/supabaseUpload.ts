@@ -1,10 +1,11 @@
+import "../../loadEnvironment";
 import { createClient } from "@supabase/supabase-js";
 import { NextFunction, Request, Response } from "express";
 import { readFile } from "fs/promises";
 
 const supabase = createClient(
-  process.env.SUPABASE_CONFIG || "",
-  process.env.SUPABASE_KEY || ""
+  process.env.SUPABASE_CONFIG,
+  process.env.SUPABASE_KEY
 );
 
 const supabaseUpload = async (
