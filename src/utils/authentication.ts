@@ -1,6 +1,6 @@
 import jws from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { UserPayload } from "../types/interfaces";
+import { UserPayload } from "../types/user";
 
 export const getToken = (payload: UserPayload) =>
   jws.sign(payload, process.env.SECRET);

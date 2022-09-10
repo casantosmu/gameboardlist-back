@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
-import { UserPayload } from "../../types/interfaces";
+import { UserPayload } from "../../types/user";
 
 interface GetRequest extends Request {
   payload: UserPayload;

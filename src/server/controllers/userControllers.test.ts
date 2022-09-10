@@ -1,14 +1,9 @@
 import "../../loadEnvironment";
 import { Request, Response } from "express";
 import User from "../../database/models/User";
-import {
-  CustomRequest,
-  UserLogin,
-  UserPayload,
-  UserRegister,
-  UserRequest,
-} from "../../types/interfaces";
 import { loginUser, registerUser } from "./userControllers";
+import { UserLogin, UserPayload, UserRegister } from "../../types/user";
+import { CustomRequest, UserRequest } from "../../types/interfaces";
 
 afterEach(() => {
   jest.clearAllMocks();

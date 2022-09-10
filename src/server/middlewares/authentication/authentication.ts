@@ -3,12 +3,12 @@ import { JwtPayload } from "jsonwebtoken";
 import { verifyToken } from "../../../utils/authentication";
 import CustomError from "../../../utils/CustomError";
 
-interface CustomRequest extends Request {
+interface AuthenticationRequest extends Request {
   payload: JwtPayload;
 }
 
 const authentication = (
-  req: CustomRequest,
+  req: AuthenticationRequest,
   res: Response,
   next: NextFunction
 ) => {
