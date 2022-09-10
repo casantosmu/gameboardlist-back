@@ -8,8 +8,8 @@ interface CustomRequest extends Request {
 }
 
 let mockVerifyToken: (token: string) => string | JwtPayload;
-jest.mock("../../utils/authentication", () => ({
-  ...jest.requireActual("../../utils/authentication"),
+jest.mock("../../../utils/authentication", () => ({
+  ...jest.requireActual("../../../utils/authentication"),
   verifyToken: (token: string) => mockVerifyToken(token),
 }));
 
@@ -26,14 +26,10 @@ describe("Given a authentication function", () => {
       const req = {
         get: jest.fn(),
       } as Partial<CustomRequest>;
-      const res = {} as Partial<Response>;
+      const res = {} as Response;
       const next = () => {};
 
-      authentication(
-        req as CustomRequest,
-        res as Response,
-        next as NextFunction
-      );
+      authentication(req as CustomRequest, res, next as NextFunction);
 
       expect(req.get).toHaveBeenCalledWith("Authorization");
     });
@@ -44,14 +40,10 @@ describe("Given a authentication function", () => {
       const req = {
         get: jest.fn().mockReturnValue(null),
       } as Partial<CustomRequest>;
-      const res = {} as Partial<Response>;
+      const res = {} as Response;
       const next = jest.fn();
 
-      authentication(
-        req as CustomRequest,
-        res as Response,
-        next as NextFunction
-      );
+      authentication(req as CustomRequest, res, next as NextFunction);
 
       const nextParameter = next.mock.calls[0][0];
 
@@ -66,14 +58,10 @@ describe("Given a authentication function", () => {
       const req = {
         get: jest.fn().mockReturnValue("asdfasdfa"),
       } as Partial<CustomRequest>;
-      const res = {} as Partial<Response>;
+      const res = {} as Response;
       const next = jest.fn();
 
-      authentication(
-        req as CustomRequest,
-        res as Response,
-        next as NextFunction
-      );
+      authentication(req as CustomRequest, res, next as NextFunction);
 
       const nextParameter = next.mock.calls[0][0];
 
@@ -88,18 +76,14 @@ describe("Given a authentication function", () => {
       const req = {
         get: jest.fn().mockReturnValue("Bearer 123"),
       } as Partial<CustomRequest>;
-      const res = {} as Partial<Response>;
+      const res = {} as Response;
       const next = jest.fn();
 
       mockVerifyToken = jest.fn();
 
       const expectedToken = "123";
 
-      authentication(
-        req as CustomRequest,
-        res as Response,
-        next as NextFunction
-      );
+      authentication(req as CustomRequest, res, next as NextFunction);
 
       expect(mockVerifyToken).toHaveBeenCalledWith(expectedToken);
     });
@@ -108,7 +92,7 @@ describe("Given a authentication function", () => {
       const req = {
         get: jest.fn().mockReturnValue("Bearer 123"),
       } as Partial<CustomRequest>;
-      const res = {} as Partial<Response>;
+      const res = {} as Response;
       const next = jest.fn();
 
       const payload = {
@@ -117,11 +101,7 @@ describe("Given a authentication function", () => {
 
       mockVerifyToken = jest.fn().mockReturnValue(payload);
 
-      authentication(
-        req as CustomRequest,
-        res as Response,
-        next as NextFunction
-      );
+      authentication(req as CustomRequest, res, next as NextFunction);
 
       expect(req.payload).toBe(payload);
     });
@@ -130,7 +110,7 @@ describe("Given a authentication function", () => {
       const req = {
         get: jest.fn().mockReturnValue("Bearer 123"),
       } as Partial<CustomRequest>;
-      const res = {} as Partial<Response>;
+      const res = {} as Response;
       const next = jest.fn();
 
       const payload = {
@@ -139,11 +119,7 @@ describe("Given a authentication function", () => {
 
       mockVerifyToken = jest.fn().mockReturnValue(payload);
 
-      authentication(
-        req as CustomRequest,
-        res as Response,
-        next as NextFunction
-      );
+      authentication(req as CustomRequest, res, next as NextFunction);
 
       expect(next).toHaveBeenCalled();
     });
@@ -153,7 +129,7 @@ describe("Given a authentication function", () => {
         const req = {
           get: jest.fn().mockReturnValue("Bearer 123"),
         } as Partial<CustomRequest>;
-        const res = {} as Partial<Response>;
+        const res = {} as Response;
         const next = jest.fn();
 
         const privateErrorMessage = "private";
@@ -162,11 +138,7 @@ describe("Given a authentication function", () => {
           throw new Error(privateErrorMessage);
         };
 
-        authentication(
-          req as CustomRequest,
-          res as Response,
-          next as NextFunction
-        );
+        authentication(req as CustomRequest, res, next as NextFunction);
 
         const nextParameter = next.mock.calls[0][0];
 

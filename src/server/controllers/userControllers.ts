@@ -1,12 +1,7 @@
 import { NextFunction, Response } from "express";
 import User from "../../database/models/User";
-import {
-  CustomRequest,
-  UserLogin,
-  UserPayload,
-  UserRegister,
-  UserRequest,
-} from "../../types/interfaces";
+import { CustomRequest, UserRequest } from "../../types/interfaces";
+import { UserLogin, UserPayload, UserRegister } from "../../types/user";
 import {
   getEncriptedData,
   getToken,

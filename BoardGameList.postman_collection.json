@@ -57,6 +57,89 @@
         "header": []
       },
       "response": []
+    },
+    {
+      "name": "Post gameboard",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{VALID TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "rating",
+              "value": "7",
+              "type": "text"
+            },
+            {
+              "key": "weight",
+              "value": "2",
+              "type": "text"
+            },
+            {
+              "key": "name",
+              "value": "Carcassonne",
+              "type": "text"
+            },
+            {
+              "key": "year",
+              "value": "2000",
+              "type": "text"
+            },
+            {
+              "key": "category",
+              "value": "strategy",
+              "type": "text"
+            },
+            {
+              "key": "players[min]",
+              "value": "2",
+              "type": "text"
+            },
+            {
+              "key": "players[max]",
+              "value": "4",
+              "type": "text"
+            },
+            {
+              "key": "time[min]",
+              "value": "30",
+              "type": "text"
+            },
+            {
+              "key": "time[max]",
+              "value": "45",
+              "type": "text"
+            },
+            {
+              "key": "createdBy",
+              "value": "63133b0dbb991153085d5fd8",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "src": "/C:/Users/Carlos/Downloads/pic2728138.jpg"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{LOCAL}}/gameboards",
+          "host": ["{{LOCAL}}"],
+          "path": ["gameboards"]
+        }
+      },
+      "response": []
     }
   ],
   "variable": [
@@ -67,6 +150,10 @@
     {
       "key": "LOCAL",
       "value": "http://localhost:4000"
+    },
+    {
+      "key": "VALID TOKEN",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTMzYjBkYmI5OTExNTMwODVkNWZkOCIsIm5hbWUiOiJDYXJsb3MiLCJlbWFpbCI6IkNhcmxvcyIsImlhdCI6MTY2MjU2NDcxMn0.Dhctjav8ZeA8qBhAY4qPlfyVfXAaOrjBXVwBeFb_4o0"
     }
   ]
 }
