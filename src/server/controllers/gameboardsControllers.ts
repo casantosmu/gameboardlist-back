@@ -1,9 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
+import { Gameboard as IGameboard } from "../../types/gameboard";
+import { CustomRequest } from "../../types/interfaces";
 import { UserPayload } from "../../types/user";
 
 interface GetRequest extends Request {
   payload: UserPayload;
+}
+
+interface RequestGameboard extends IGameboard {
+  file: string;
+  fileBackup: string;
 }
 
 export const getGameboards = async (
@@ -25,17 +32,17 @@ export const getGameboards = async (
 };
 
 export const postGameboard = async (
-  req: Request,
+  req: CustomRequest<RequestGameboard>,
   res: Response,
   next: NextFunction
 ) => {
-  const gameboard = req.body;
+  const { file, fileBackup, ...gameboard } = req.body;
 
   try {
     await Gameboard.create({
       ...gameboard,
-      image: gameboard.file,
-      imageBackup: gameboard.fileBackup,
+      image: file,
+      imageBackup: fileBackup,
     });
 
     res.status(201).json({ sucess: "Boardgame created successfully" });
