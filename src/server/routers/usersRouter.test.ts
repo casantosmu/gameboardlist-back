@@ -1,28 +1,6 @@
+import "../../test-utils/supertestSetup";
 import request from "supertest";
-import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
 import app from "..";
-import connectDB from "../../database";
-import User from "../../database/models/User";
-
-let mongoServer: MongoMemoryServer;
-
-beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUrl = mongoServer.getUri();
-
-  await connectDB(mongoUrl);
-});
-
-afterAll(async () => {
-  await mongoose.connection.close();
-
-  await mongoServer.stop();
-});
-
-afterEach(async () => {
-  await User.deleteMany();
-});
 
 describe("Given a /users/register route", () => {
   describe("When requested with a post method and valid data", () => {
