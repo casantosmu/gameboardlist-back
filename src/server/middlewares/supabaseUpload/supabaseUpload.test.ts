@@ -41,16 +41,12 @@ describe("Given a supabaseUpload function", () => {
       filename: "filename",
     },
   } as Partial<Request>;
-  const res = {} as Partial<Response>;
+  const res = {} as Response;
   const next = jest.fn();
 
   describe("When called with a request, a response and a next function as arguments", () => {
     test("Then it should call next", async () => {
-      await supabaseUpload(
-        req as Request,
-        res as Response,
-        next as NextFunction
-      );
+      await supabaseUpload(req as Request, res, next as NextFunction);
 
       expect(next).toHaveBeenCalled();
     });
