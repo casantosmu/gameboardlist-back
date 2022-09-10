@@ -5,6 +5,10 @@ const gameboardSchema = new Schema({
     type: String,
     required: true,
   },
+  imageBackup: {
+    type: String,
+    required: true,
+  },
   rating: {
     type: Number,
     min: 1,
@@ -21,6 +25,7 @@ const gameboardSchema = new Schema({
     type: String,
     trim: true,
     required: true,
+    min: 1,
     maxlength: 100,
   },
   year: {

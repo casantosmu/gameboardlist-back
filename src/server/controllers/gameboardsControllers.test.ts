@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
 import { UserPayload } from "../../types/interfaces";
-import getGameboards from "./gameboardsControllers";
+import { getGameboards } from "./gameboardsControllers";
 
 interface CustomRequest extends Request {
   payload: UserPayload;
