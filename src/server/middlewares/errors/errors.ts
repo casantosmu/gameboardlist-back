@@ -2,7 +2,7 @@ import chalk from "chalk";
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "express-validation";
-import CustomError from "../../utils/CustomError";
+import CustomError from "../../../utils/CustomError";
 
 const debug = Debug("gameboardlist:server:errors");
 

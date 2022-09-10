@@ -4,10 +4,10 @@ import {
   getGameboards,
   postGameboard,
 } from "../controllers/gameboardsControllers";
-import authentication from "../middlewares/authentication";
-import parseMulter from "../middlewares/parseMulter";
-import supabaseUpload from "../middlewares/supabaseUpload";
-import uploadImage from "../middlewares/uploadImage";
+import authentication from "../middlewares/authentication/authentication";
+import parseMulter from "../middlewares/parseMulter/parseMulter";
+import supabaseUpload from "../middlewares/supabaseUpload/supabaseUpload";
+import uploadImage from "../middlewares/uploadImage/uploadImage";
 import postGameboardSchema from "../schemas/postGameboardSchema";
 
 const gameboardsRouter = express.Router();

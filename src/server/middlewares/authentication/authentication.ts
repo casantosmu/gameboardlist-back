@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import { verifyToken } from "../../utils/authentication";
-import CustomError from "../../utils/CustomError";
+import { verifyToken } from "../../../utils/authentication";
+import CustomError from "../../../utils/CustomError";
 
 interface CustomRequest extends Request {
   payload: JwtPayload;

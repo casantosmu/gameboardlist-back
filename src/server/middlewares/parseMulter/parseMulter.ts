@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import CustomError from "../../utils/CustomError";
+import CustomError from "../../../utils/CustomError";
 
 const parseMulter = async (req: Request, res: Response, next: NextFunction) => {
   let file: Express.Multer.File;

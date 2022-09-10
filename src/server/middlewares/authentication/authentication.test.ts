@@ -8,8 +8,8 @@ interface CustomRequest extends Request {
 }
 
 let mockVerifyToken: (token: string) => string | JwtPayload;
-jest.mock("../../utils/authentication", () => ({
-  ...jest.requireActual("../../utils/authentication"),
+jest.mock("../../../utils/authentication", () => ({
+  ...jest.requireActual("../../../utils/authentication"),
   verifyToken: (token: string) => mockVerifyToken(token),
 }));
 

@@ -1,6 +1,6 @@
 import { Request } from "express";
 import multer, { FileFilterCallback } from "multer";
-import CustomError from "../../utils/CustomError";
+import CustomError from "../../../utils/CustomError";
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {

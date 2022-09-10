@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { errors, ValidationError } from "express-validation";
-import CustomError from "../../utils/CustomError";
+import CustomError from "../../../utils/CustomError";
 import { generalError, notFoundError } from "./errors";
 
 afterEach(() => {

@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-import { generalError, notFoundError } from "./middlewares/errors";
+import { generalError, notFoundError } from "./middlewares/errors/errors";
 import usersRouter from "./routers/usersRouter";
 import gameboardsRouter from "./routers/gameboardsRouter";
 
