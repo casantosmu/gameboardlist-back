@@ -8,11 +8,6 @@ interface GetRequest extends Request {
   payload: UserPayload;
 }
 
-interface RequestGameboard extends IGameboard {
-  file: string;
-  fileBackup: string;
-}
-
 export const getGameboards = async (
   req: GetRequest,
   res: Response,
@@ -32,17 +27,18 @@ export const getGameboards = async (
 };
 
 export const postGameboard = async (
-  req: CustomRequest<RequestGameboard>,
+  req: CustomRequest<IGameboard>,
   res: Response,
   next: NextFunction
 ) => {
-  const { file, fileBackup, ...gameboard } = req.body;
+  const { image, ...gameboard } = req.body;
+
+  const imagePath = `${process.env.BASE_URL}/${image}`;
 
   try {
     await Gameboard.create({
       ...gameboard,
-      image: file,
-      imageBackup: fileBackup,
+      image: imagePath,
     });
 
     res.status(201).json({ sucess: "Boardgame created successfully" });
