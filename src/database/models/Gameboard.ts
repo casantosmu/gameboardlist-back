@@ -29,7 +29,7 @@ const gameboardSchema = new Schema({
     maxlength: 100,
   },
   year: {
-    type: Date,
+    type: Number,
     required: true,
   },
   category: {
