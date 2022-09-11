@@ -6,10 +6,14 @@ import { generalError, notFoundError } from "./middlewares/errors/errors";
 import usersRouter from "./routers/usersRouter";
 import gameboardsRouter from "./routers/gameboardsRouter";
 
+const HelmetOptions = {
+  crossOriginResourcePolicy: false,
+};
+
 const app = express();
 
 app.use(express.json());
-app.use(helmet());
+app.use(helmet(HelmetOptions));
 app.use(cors());
 app.use(morgan("dev"));
 
