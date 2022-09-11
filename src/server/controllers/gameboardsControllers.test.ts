@@ -1,3 +1,4 @@
+import "../../loadEnvironment";
 import { Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
 import fakeGameboard from "../../test-utils/fakeGameboard";
@@ -103,31 +104,24 @@ describe("Given a getGameboards controller", () => {
 });
 
 describe("Given a postGambeoard controller", () => {
-  const requestData = {
-    ...fakeGameboard,
-    file: "file",
-    fileBackup: "bakup",
-  };
   const req = {
-    body: requestData,
+    body: fakeGameboard,
   } as Partial<Request>;
 
   describe("When it recives a request and a response", () => {
-    test("Then it should call Gameboard create with gameboard, file and backup file from the request body", async () => {
+    test("Then it should call Gameboard create with the request body", async () => {
       const res = {} as Response;
       const next = () => {};
-
-      const expectedResult = {
-        ...fakeGameboard,
-        image: requestData.file,
-        imageBackup: requestData.fileBackup,
-      };
-
       Gameboard.create = jest.fn();
+
+      const expectedGameboard = {
+        ...fakeGameboard,
+        image: `${process.env.BASE_URL}/${fakeGameboard.image}`,
+      };
 
       await postGameboard(req as Request, res, next);
 
-      expect(Gameboard.create).toHaveBeenCalledWith(expectedResult);
+      expect(Gameboard.create).toHaveBeenCalledWith(expectedGameboard);
     });
 
     test("Then it should call the response status method with 201", async () => {
