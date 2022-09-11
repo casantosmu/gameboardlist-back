@@ -5,8 +5,9 @@ import {
   postGameboard,
 } from "../controllers/gameboardsControllers";
 import authentication from "../middlewares/authentication/authentication";
-import parseMulter from "../middlewares/parseMulter/parseMulter";
-import supabaseUpload from "../middlewares/supabaseUpload/supabaseUpload";
+import checkRequestFile from "../middlewares/checkRequestFile/checkRequestFile";
+import resizeImage from "../middlewares/resizeImage/resizeImage";
+import supabaseImage from "../middlewares/supabaseImage/supabaseImage";
 import uploadImage from "../middlewares/uploadImage/uploadImage";
 import postGameboardSchema from "../schemas/postGameboardSchema";
 
@@ -17,8 +18,9 @@ gameboardsRouter.post(
   "/",
   authentication,
   uploadImage.single("image"),
-  parseMulter,
-  supabaseUpload,
+  checkRequestFile,
+  resizeImage,
+  supabaseImage,
   validate(postGameboardSchema),
   postGameboard
 );
