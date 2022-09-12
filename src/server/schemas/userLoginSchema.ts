@@ -3,8 +3,8 @@ import { Joi } from "express-validation";
 const userLoginSchema = {
   body: Joi.object({
     user: Joi.object({
-      email: Joi.string().required(),
-      password: Joi.string().required(),
+      email: Joi.string(),
+      password: Joi.string(),
     }).required(),
   }),
 };
