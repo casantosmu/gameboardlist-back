@@ -85,7 +85,7 @@ describe("Given a registerUser middleware", () => {
         } as Partial<Response>;
         const next = jest.fn();
 
-        const expectedMessage = { sucess: "User has been registered" };
+        const expectedMessage = { success: "User has been registered" };
 
         User.findOne = jest.fn().mockReturnValue(null);
         User.create = jest.fn().mockReturnValue({});

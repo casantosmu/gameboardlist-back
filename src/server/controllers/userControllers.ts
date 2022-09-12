@@ -46,7 +46,7 @@ export const registerUser = async (
       password: encriptedPassword,
     });
 
-    res.status(201).json({ sucess: "User has been registered" });
+    res.status(201).json({ success: "User has been registered" });
   } catch (error) {
     next(error);
   }
