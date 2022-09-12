@@ -53,8 +53,23 @@
     {
       "name": "Get gameboards",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{VALID TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "{{LOCAL}}/gameboards",
+          "host": ["{{LOCAL}}"],
+          "path": ["gameboards"]
+        }
       },
       "response": []
     },
@@ -78,47 +93,47 @@
           "formdata": [
             {
               "key": "rating",
-              "value": "7",
+              "value": "3",
               "type": "text"
             },
             {
               "key": "weight",
-              "value": "2",
-              "type": "text"
-            },
-            {
-              "key": "name",
-              "value": "Carcassonne",
-              "type": "text"
-            },
-            {
-              "key": "year",
-              "value": "2000",
-              "type": "text"
-            },
-            {
-              "key": "category",
-              "value": "strategy",
-              "type": "text"
-            },
-            {
-              "key": "players[min]",
-              "value": "2",
-              "type": "text"
-            },
-            {
-              "key": "players[max]",
               "value": "4",
               "type": "text"
             },
             {
+              "key": "name",
+              "value": "aens end",
+              "type": "text"
+            },
+            {
+              "key": "year",
+              "value": "2020",
+              "type": "text"
+            },
+            {
+              "key": "category",
+              "value": "thematic",
+              "type": "text"
+            },
+            {
+              "key": "players[min]",
+              "value": "1",
+              "type": "text"
+            },
+            {
+              "key": "players[max]",
+              "value": "3",
+              "type": "text"
+            },
+            {
               "key": "time[min]",
-              "value": "30",
+              "value": "60",
               "type": "text"
             },
             {
               "key": "time[max]",
-              "value": "45",
+              "value": "150",
               "type": "text"
             },
             {
@@ -129,7 +144,7 @@
             {
               "key": "image",
               "type": "file",
-              "src": "/C:/Users/Carlos/Downloads/pic2728138.jpg"
+              "src": "/C:/Users/Carlos/Downloads/pic6293412.jpg"
             }
           ]
         },
@@ -137,6 +152,36 @@
           "raw": "{{LOCAL}}/gameboards",
           "host": ["{{LOCAL}}"],
           "path": ["gameboards"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete gameboard",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{VALID TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "",
+            "variables": ""
+          }
+        },
+        "url": {
+          "raw": "{{LOCAL}}/gameboards/631e5882efa14ab73d91f223",
+          "host": ["{{LOCAL}}"],
+          "path": ["gameboards", "631e5882efa14ab73d91f223"]
         }
       },
       "response": []
