@@ -4,6 +4,10 @@ import CustomError from "../../../utils/CustomError";
 
 const storage = multer.memoryStorage();
 
+const limits = {
+  fileSize: 8000000,
+};
+
 const fileFilter = (
   req: Request,
   file: Express.Multer.File,
@@ -15,6 +19,6 @@ const fileFilter = (
   cb(null, true);
 };
 
-const uploadImage = multer({ storage, fileFilter });
+const uploadImage = multer({ storage, fileFilter, limits });
 
 export default uploadImage;
