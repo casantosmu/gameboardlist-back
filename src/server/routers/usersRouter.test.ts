@@ -24,7 +24,7 @@ describe("Given a /users/register route", () => {
       });
 
       test("Then it should respond with a body with succes message", async () => {
-        const expectedBody = { sucess: "User has been registered" };
+        const expectedBody = { success: "User has been registered" };
 
         const res = await request(app)
           .post("/users/register")

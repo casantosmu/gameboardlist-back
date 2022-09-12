@@ -3,13 +3,14 @@ import Gameboard from "../../database/models/Gameboard";
 import { Gameboard as IGameboard } from "../../types/gameboard";
 import { CustomRequest } from "../../types/interfaces";
 import { UserPayload } from "../../types/user";
+import CustomError from "../../utils/CustomError";
 
-interface GetRequest extends Request {
+interface RequestWithPayload extends Request {
   payload: UserPayload;
 }
 
 export const getGameboards = async (
-  req: GetRequest,
+  req: RequestWithPayload,
   res: Response,
   next: NextFunction
 ) => {
@@ -41,8 +42,41 @@ export const postGameboard = async (
       image: imagePath,
     });
 
-    res.status(201).json({ sucess: "Boardgame created successfully" });
+    res.status(201).json({ success: "Boardgame created successfully" });
   } catch (error) {
     next(error);
   }
+};
+
+export const deleteGameboard = async (
+  req: RequestWithPayload,
+  res: Response,
+  next: NextFunction
+) => {
+  const {
+    payload: { id: userId },
+    params: { id: gameboardId },
+  } = req;
+
+  let gameboardFound: IGameboard;
+  try {
+    gameboardFound = await Gameboard.findByIdAndRemove({
+      _id: gameboardId,
+      createdBy: userId,
+    });
+  } catch (error) {
+    next(error);
+    return;
+  }
+
+  if (!gameboardFound) {
+    const customError = new CustomError(
+      404,
+      `No gameboard with id ${gameboardId}`
+    );
+    next(customError);
+    return;
+  }
+
+  res.status(200).json({ success: "Boardgame successfully removed" });
 };
