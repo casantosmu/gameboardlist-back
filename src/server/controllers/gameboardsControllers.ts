@@ -78,5 +78,5 @@ export const deleteGameboard = async (
     return;
   }
 
-  res.status(200).json({ success: "Boardgame successfully removed" });
+  res.status(204);
 };
