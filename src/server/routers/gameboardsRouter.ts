@@ -1,6 +1,7 @@
 import express from "express";
 import { validate } from "express-validation";
 import {
+  deleteGameboard,
   getGameboards,
   postGameboard,
 } from "../controllers/gameboardsControllers";
@@ -24,5 +25,6 @@ gameboardsRouter.post(
   validate(postGameboardSchema),
   postGameboard
 );
+gameboardsRouter.delete("/:id", authentication, deleteGameboard);
 
 export default gameboardsRouter;
