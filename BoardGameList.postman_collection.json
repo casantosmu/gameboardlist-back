@@ -144,7 +144,7 @@
             {
               "key": "image",
               "type": "file",
-              "src": "/C:/Users/Carlos/Downloads/pic6293412.jpg"
+              "src": "/C:/Users/Carlos/Downloads/pic2728138.jpg"
             }
           ]
         },
@@ -179,9 +179,32 @@
           }
         },
         "url": {
-          "raw": "{{LOCAL}}/gameboards/631e5882efa14ab73d91f223",
+          "raw": "{{LOCAL}}/gameboards/6320202e8b1986d9fdc96a24",
           "host": ["{{LOCAL}}"],
-          "path": ["gameboards", "631e5882efa14ab73d91f223"]
+          "path": ["gameboards", "6320202e8b1986d9fdc96a24"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get gameboard",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{VALID TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LOCAL}}/gameboards/6320202e8b1986d9fdc96a24",
+          "host": ["{{LOCAL}}"],
+          "path": ["gameboards", "6320202e8b1986d9fdc96a24"]
         }
       },
       "response": []

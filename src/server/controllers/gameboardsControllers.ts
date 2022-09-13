@@ -80,3 +80,36 @@ export const deleteGameboard = async (
 
   res.status(204).send();
 };
+
+export const getGameboard = async (
+  req: RequestWithPayload,
+  res: Response,
+  next: NextFunction
+) => {
+  const {
+    payload: { id: userId },
+    params: { id: gameboardId },
+  } = req;
+
+  let gameboardFound: IGameboard;
+  try {
+    gameboardFound = await Gameboard.findOne({
+      _id: gameboardId,
+      createdBy: userId,
+    });
+  } catch (error) {
+    next(error);
+    return;
+  }
+
+  if (!gameboardFound) {
+    const customError = new CustomError(
+      404,
+      `No gameboard with id ${gameboardId}`
+    );
+    next(customError);
+    return;
+  }
+
+  res.status(200).json({ gameboard: gameboardFound });
+};
