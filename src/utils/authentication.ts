@@ -1,4 +1,3 @@
-import "../loadEnvironment";
 import jws from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { UserPayload } from "../types/user";
