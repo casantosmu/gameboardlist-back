@@ -118,10 +118,7 @@ describe("Given a postGambeoard controller", () => {
       const next = () => {};
       Gameboard.create = jest.fn();
 
-      const expectedGameboard = {
-        ...fakeGameboard,
-        image: `${process.env.BASE_URL}/${fakeGameboard.image}`,
-      };
+      const expectedGameboard = fakeGameboard;
 
       await postGameboard(req as Request, res, next);
 
