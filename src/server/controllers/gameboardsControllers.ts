@@ -32,15 +32,10 @@ export const postGameboard = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { image, ...gameboard } = req.body;
-
-  const imagePath = `${process.env.BASE_URL}/${image}`;
+  const gameboard = req.body;
 
   try {
-    await Gameboard.create({
-      ...gameboard,
-      image: imagePath,
-    });
+    await Gameboard.create(gameboard);
 
     res.status(201).json({ success: "Boardgame created successfully" });
   } catch (error) {

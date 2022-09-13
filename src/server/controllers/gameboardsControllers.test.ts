@@ -1,7 +1,7 @@
 import "../../loadEnvironment";
 import { Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
-import fakeGameboard from "../../test-utils/fakeGameboard";
+import { fakeGameboard } from "../../test-utils/fakeData";
 import { UserPayload } from "../../types/user";
 import {
   getGameboard,
@@ -118,10 +118,7 @@ describe("Given a postGambeoard controller", () => {
       const next = () => {};
       Gameboard.create = jest.fn();
 
-      const expectedGameboard = {
-        ...fakeGameboard,
-        image: `${process.env.BASE_URL}/${fakeGameboard.image}`,
-      };
+      const expectedGameboard = fakeGameboard;
 
       await postGameboard(req as Request, res, next);
 
