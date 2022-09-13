@@ -1,4 +1,5 @@
 import { Gameboard } from "../types/gameboard";
+import { User } from "../types/user";
 
 export const fakeGameboard: Gameboard = {
   id: "2",
@@ -19,4 +20,10 @@ export const fakeGameboard: Gameboard = {
     max: 90,
   },
   weight: 3,
+};
+
+export const fakeUser: User = {
+  email: "email",
+  name: "name",
+  password: "ppassword",
 };
