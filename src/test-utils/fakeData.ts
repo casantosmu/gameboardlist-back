@@ -1,6 +1,6 @@
 import { Gameboard } from "../types/gameboard";
 
-const fakeGameboard: Gameboard = {
+export const fakeGameboard: Gameboard = {
   id: "2",
   image: "fewfw",
   imageBackup: "fwef",
@@ -20,5 +20,3 @@ const fakeGameboard: Gameboard = {
   },
   weight: 3,
 };
-
-export default fakeGameboard;
