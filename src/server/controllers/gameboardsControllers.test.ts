@@ -4,6 +4,7 @@ import Gameboard from "../../database/models/Gameboard";
 import { fakeGameboard } from "../../test-utils/fakeData";
 import { UserPayload } from "../../types/user";
 import {
+  deleteGameboard,
   getGameboard,
   getGameboards,
   postGameboard,
@@ -295,6 +296,129 @@ describe("Given a getGameboard controller", () => {
       await getGameboard(req as RequestWithPayload, res as Response, next);
 
       expect(res.json).toHaveBeenCalledWith({ gameboard });
+    });
+  });
+});
+
+describe("Given a deleteGameboard controller", () => {
+  describe("When its called with a request with userId on payload and gameboard id on params", () => {
+    test("Then it should call Gameboard findByIdAndRemove with the recived id's", async () => {
+      const gameboardId = "gameboardId";
+      const userId = "userId";
+
+      const req = {
+        params: {
+          id: gameboardId,
+        },
+        payload: {
+          id: userId,
+        },
+      } as Partial<Request>;
+      const res = {} as Response;
+      const next = () => {};
+
+      Gameboard.findByIdAndRemove = jest.fn();
+
+      await deleteGameboard(req as RequestWithPayload, res, next);
+
+      expect(Gameboard.findByIdAndRemove).toHaveBeenCalledWith({
+        _id: gameboardId,
+        createdBy: userId,
+      });
+    });
+  });
+
+  describe("When it recives a next function", () => {
+    describe("And Gameboard findByIdAndRemove rejects with an error", () => {
+      test("Then it should call next function with the error", async () => {
+        const errorMessage = "Error message";
+        const error = new Error(errorMessage);
+
+        const req = {
+          params: {
+            id: "",
+          },
+          payload: {
+            id: "",
+          },
+        } as Partial<Request>;
+        const res = {} as Response;
+        const next = jest.fn();
+
+        Gameboard.findByIdAndRemove = jest.fn().mockRejectedValue(error);
+
+        await deleteGameboard(req as RequestWithPayload, res, next);
+
+        const nextParameter = next.mock.calls[0][0];
+
+        expect(nextParameter.message).toBe(errorMessage);
+      });
+    });
+
+    describe("And Gameboard findByIdAndRemove returns null", () => {
+      test("Then it should call next function with a custom error", async () => {
+        const gameboardId = "gameboardId";
+        const expectedStatus = 404;
+        const expectedPublicMessage = `No gameboard with id ${gameboardId}`;
+
+        const req = {
+          params: {
+            id: gameboardId,
+          },
+          payload: {
+            id: "",
+          },
+        } as Partial<Request>;
+        const res = {} as Response;
+        const next = jest.fn();
+
+        Gameboard.findByIdAndRemove = jest.fn().mockResolvedValue(null);
+
+        await deleteGameboard(req as RequestWithPayload, res, next);
+
+        const nextParameter = next.mock.calls[0][0];
+
+        expect(nextParameter.publicMessage).toBe(expectedPublicMessage);
+        expect(nextParameter.status).toBe(expectedStatus);
+      });
+    });
+  });
+
+  describe("When it recives a response and Gameboard findByIdAndRemove returns an user", () => {
+    const req = {
+      params: {
+        id: "",
+      },
+      payload: {
+        id: "",
+      },
+    } as Partial<Request>;
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as Partial<Response>;
+    const next = () => {};
+
+    test("Then it should call the response method with a status 204", async () => {
+      const expectedStatus = 204;
+
+      Gameboard.findByIdAndRemove = jest.fn().mockResolvedValue({});
+
+      await deleteGameboard(req as RequestWithPayload, res as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+    });
+
+    test("Then it should call the send method", async () => {
+      const gameboard = {
+        gameboard: "gameboard!",
+      };
+
+      Gameboard.findByIdAndRemove = jest.fn().mockResolvedValue(gameboard);
+
+      await deleteGameboard(req as RequestWithPayload, res as Response, next);
+
+      expect(res.send).toHaveBeenCalled();
     });
   });
 });
