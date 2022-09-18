@@ -114,7 +114,7 @@ describe("Given a postGambeoard controller", () => {
   } as Partial<Request>;
 
   describe("When it recives a request and a response", () => {
-    test("Then it should call Gameboard create with the request body", async () => {
+    test("Then it should call Gameboard.create with the request body", async () => {
       const res = {} as Response;
       const next = () => {};
       Gameboard.create = jest.fn();
@@ -142,22 +142,21 @@ describe("Given a postGambeoard controller", () => {
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
-    test("Then it should call the response json method with a success message", async () => {
+    test("Then it should call the response json method with the created gameboard", async () => {
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       } as Partial<Response>;
       const next = () => {};
 
-      const expectedSuccessMessage = {
-        success: "Boardgame created successfully",
-      };
+      const createdGameboard = fakeGameboard;
+      const expectedResult = { gameboard: createdGameboard };
 
-      Gameboard.create = jest.fn().mockReturnValue({});
+      Gameboard.create = jest.fn().mockReturnValue(createdGameboard);
 
       await postGameboard(req as Request, res as Response, next);
 
-      expect(res.json).toHaveBeenCalledWith(expectedSuccessMessage);
+      expect(res.json).toHaveBeenCalledWith(expectedResult);
     });
   });
 
