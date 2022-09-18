@@ -35,9 +35,9 @@ export const postGameboard = async (
   const gameboard = req.body;
 
   try {
-    await Gameboard.create(gameboard);
+    const createdGameboard = await Gameboard.create(gameboard);
 
-    res.status(201).json({ success: "Boardgame created successfully" });
+    res.status(201).json({ gameboard: createdGameboard });
   } catch (error) {
     next(error);
   }
