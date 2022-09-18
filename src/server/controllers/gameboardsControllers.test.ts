@@ -111,17 +111,23 @@ describe("Given a getGameboards controller", () => {
 describe("Given a postGambeoard controller", () => {
   const req = {
     body: fakeGameboard,
-  } as Partial<Request>;
+    payload: {
+      id: "ID",
+    },
+  } as Partial<RequestWithPayload>;
 
   describe("When it recives a request and a response", () => {
-    test("Then it should call Gameboard.create with the request body", async () => {
+    test("Then it should call Gameboard.create with the request body and id from payload", async () => {
       const res = {} as Response;
       const next = () => {};
       Gameboard.create = jest.fn();
 
-      const expectedGameboard = fakeGameboard;
+      const expectedGameboard = {
+        ...fakeGameboard,
+        createdBy: req.payload.id,
+      };
 
-      await postGameboard(req as Request, res, next);
+      await postGameboard(req as RequestWithPayload, res, next);
 
       expect(Gameboard.create).toHaveBeenCalledWith(expectedGameboard);
     });
@@ -137,7 +143,7 @@ describe("Given a postGambeoard controller", () => {
 
       const expectedStatusCode = 201;
 
-      await postGameboard(req as Request, res as Response, next);
+      await postGameboard(req as RequestWithPayload, res as Response, next);
 
       expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
@@ -154,7 +160,7 @@ describe("Given a postGambeoard controller", () => {
 
       Gameboard.create = jest.fn().mockReturnValue(createdGameboard);
 
-      await postGameboard(req as Request, res as Response, next);
+      await postGameboard(req as RequestWithPayload, res as Response, next);
 
       expect(res.json).toHaveBeenCalledWith(expectedResult);
     });
@@ -169,7 +175,7 @@ describe("Given a postGambeoard controller", () => {
 
       Gameboard.create = jest.fn().mockRejectedValue(error);
 
-      await postGameboard(req as Request, res, next);
+      await postGameboard(req as RequestWithPayload, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
     });

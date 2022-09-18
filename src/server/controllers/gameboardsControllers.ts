@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
 import { Gameboard as IGameboard } from "../../types/gameboard";
-import { CustomRequest } from "../../types/interfaces";
 import { UserPayload } from "../../types/user";
 import CustomError from "../../utils/CustomError";
 
@@ -28,11 +27,14 @@ export const getGameboards = async (
 };
 
 export const postGameboard = async (
-  req: CustomRequest<IGameboard>,
+  req: RequestWithPayload,
   res: Response,
   next: NextFunction
 ) => {
   const gameboard = req.body;
+  const userId = req.payload.id;
+
+  gameboard.createdBy = userId;
 
   try {
     const createdGameboard = await Gameboard.create(gameboard);
