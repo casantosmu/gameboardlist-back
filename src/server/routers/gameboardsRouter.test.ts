@@ -1,9 +1,10 @@
 import "../../test-utils/supertestSetup";
 import fs from "fs/promises";
 import request from "supertest";
+import { HydratedDocument } from "mongoose";
 import app from "..";
 import { fakeGameboard, fakeUser } from "../../test-utils/fakeData";
-import { UserPayload } from "../../types/user";
+import { User as IUser, UserPayload } from "../../types/user";
 import { getToken } from "../../utils/authentication";
 import "../../loadEnvironment";
 import User from "../../database/models/User";
@@ -25,7 +26,7 @@ jest.mock("@supabase/supabase-js", () => ({
 }));
 
 let authToken: string;
-let newUser: any;
+let newUser: HydratedDocument<IUser>;
 
 beforeAll(async () => {
   newUser = await User.create(fakeUser);
