@@ -56,7 +56,6 @@ describe("Given the gameRouter", () => {
           .field("time[min]", fakeGameboard.time.min)
           .field("time[max]", fakeGameboard.time.max)
           .field("authorship", fakeGameboard.authorship || "-")
-          .field("createdBy", String(newUser.id))
           .attach("image", "./src/test-utils/images.jpg")
           .expect(201);
 
@@ -86,7 +85,6 @@ describe("Given the gameRouter", () => {
             .field("time[min]", fakeGameboard.time.min)
             .field("time[max]", fakeGameboard.time.max)
             .field("authorship", fakeGameboard.authorship || "-")
-            .field("createdBy", String(newUser.id))
             .attach("image", Buffer.from("rga", "utf-8"), {
               filename: "erg",
             })
