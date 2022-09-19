@@ -1,12 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
 import { Gameboard as IGameboard } from "../../types/gameboard";
-import { UserPayload } from "../../types/user";
+import { RequestWithPayload } from "../../types/requests";
 import CustomError from "../../utils/CustomError";
-
-interface RequestWithPayload extends Request {
-  payload: UserPayload;
-}
 
 export const getGameboards = async (
   req: RequestWithPayload,

@@ -2,17 +2,13 @@ import "../../loadEnvironment";
 import { Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
 import { fakeGameboard } from "../../test-utils/fakeData";
-import { UserPayload } from "../../types/user";
 import {
   deleteGameboard,
   getGameboard,
   getGameboards,
   postGameboard,
 } from "./gameboardsControllers";
-
-interface RequestWithPayload extends Request {
-  payload: UserPayload;
-}
+import { RequestWithPayload } from "../../types/requests";
 
 afterEach(() => {
   jest.clearAllMocks();
