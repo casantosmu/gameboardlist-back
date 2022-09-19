@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import User from "../../database/models/User";
 import { loginUser, registerUser } from "./userControllers";
 import { UserLogin, UserPayload, UserRegister } from "../../types/user";
-import { CustomRequest, UserRequest } from "../../types/interfaces";
+import { UserRequest } from "../../types/requests";
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -37,7 +37,7 @@ describe("Given a registerUser middleware", () => {
           body: {
             user,
           },
-        } as CustomRequest<UserRequest<UserRegister>>;
+        } as UserRequest<UserRegister>;
         const res = {} as Response;
         const next = () => {};
 
@@ -102,7 +102,7 @@ describe("Given a registerUser middleware", () => {
       body: {
         user: {},
       },
-    } as CustomRequest<UserRequest<UserRegister>>;
+    } as UserRequest<UserRegister>;
     const res = {} as Response;
     const next = jest.fn();
 
@@ -159,7 +159,7 @@ describe("Given a loginUser middleware", () => {
         password: "",
       },
     },
-  } as CustomRequest<UserRequest<UserLogin>>;
+  } as UserRequest<UserLogin>;
   const next = jest.fn();
 
   describe("When it recives a response function", () => {

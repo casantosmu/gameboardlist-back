@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import User from "../../database/models/User";
-import { CustomRequest, UserRequest } from "../../types/interfaces";
+import { UserRequest } from "../../types/requests";
 import { UserLogin, UserPayload, UserRegister } from "../../types/user";
 import {
   getEncriptedData,
@@ -10,7 +10,7 @@ import {
 import CustomError from "../../utils/CustomError";
 
 export const registerUser = async (
-  req: CustomRequest<UserRequest<UserRegister>>,
+  req: UserRequest<UserRegister>,
   res: Response,
   next: NextFunction
 ) => {
@@ -53,7 +53,7 @@ export const registerUser = async (
 };
 
 export const loginUser = async (
-  req: CustomRequest<UserRequest<UserLogin>>,
+  req: UserRequest<UserLogin>,
   res: Response,
   next: NextFunction
 ) => {

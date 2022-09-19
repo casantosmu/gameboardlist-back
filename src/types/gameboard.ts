@@ -1,5 +1,3 @@
-import { MinMax } from "./interfaces";
-
 export interface Gameboard {
   id: string;
   image: string;
@@ -23,3 +21,8 @@ export type GameboardsCategories =
   | "thematic"
   | "wargame"
   | "strategy";
+
+interface MinMax {
+  min: number;
+  max: number;
+}

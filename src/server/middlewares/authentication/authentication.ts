@@ -1,14 +1,11 @@
-import { NextFunction, Request, Response } from "express";
-import { JwtPayload } from "jsonwebtoken";
+import { NextFunction, Response } from "express";
+import { RequestWithPayload } from "../../../types/requests";
+import { UserPayload } from "../../../types/user";
 import { verifyToken } from "../../../utils/authentication";
 import CustomError from "../../../utils/CustomError";
 
-interface AuthenticationRequest extends Request {
-  payload: JwtPayload;
-}
-
 const authentication = (
-  req: AuthenticationRequest,
+  req: RequestWithPayload,
   res: Response,
   next: NextFunction
 ) => {
@@ -24,8 +21,8 @@ const authentication = (
   const token = authenticationHeader.split(" ")[1];
 
   try {
-    const payload = verifyToken(token);
-    req.payload = payload as JwtPayload;
+    const payload = verifyToken(token) as UserPayload;
+    req.payload = payload;
 
     next();
   } catch (error) {
