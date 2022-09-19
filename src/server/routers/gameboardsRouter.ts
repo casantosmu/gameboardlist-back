@@ -11,6 +11,7 @@ import checkRequestFile from "../middlewares/checkRequestFile/checkRequestFile";
 import resizeImage from "../middlewares/resizeImage/resizeImage";
 import supabaseImage from "../middlewares/supabaseImage/supabaseImage";
 import uploadImage from "../middlewares/uploadImage/uploadImage";
+import validateObjectId from "../middlewares/validObjectId/validateObjectId";
 import postGameboardSchema from "../schemas/postGameboardSchema";
 
 const gameboardsRouter = express.Router();
@@ -26,7 +27,12 @@ gameboardsRouter.post(
   validate(postGameboardSchema),
   postGameboard
 );
-gameboardsRouter.delete("/:id", authentication, deleteGameboard);
-gameboardsRouter.get("/:id", authentication, getGameboard);
+gameboardsRouter.delete(
+  "/:id",
+  authentication,
+  validateObjectId,
+  deleteGameboard
+);
+gameboardsRouter.get("/:id", authentication, validateObjectId, getGameboard);
 
 export default gameboardsRouter;
