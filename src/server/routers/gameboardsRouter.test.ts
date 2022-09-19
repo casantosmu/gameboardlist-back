@@ -1,5 +1,4 @@
 import "../../test-utils/supertestSetup";
-import fs from "fs/promises";
 import request from "supertest";
 import { HydratedDocument } from "mongoose";
 import app from "..";
@@ -8,7 +7,6 @@ import { User as IUser, UserPayload } from "../../types/user";
 import { getToken } from "../../utils/authentication";
 import "../../loadEnvironment";
 import User from "../../database/models/User";
-import Gameboard from "../../database/models/Gameboard";
 
 jest.mock("@supabase/supabase-js", () => ({
   createClient: () => ({
@@ -59,16 +57,6 @@ describe("Given the gameRouter", () => {
           .field("authorship", fakeGameboard.authorship || "-")
           .attach("image", "./src/test-utils/images.jpg")
           .expect(201);
-
-        const queryObject = {
-          createdBy: newUser.id,
-        };
-
-        const gameboard = await Gameboard.findOne(queryObject);
-
-        if (gameboard) {
-          await fs.unlink(gameboard.image);
-        }
       });
 
       describe("And it receives a correct request a text document", () => {
@@ -90,16 +78,6 @@ describe("Given the gameRouter", () => {
               filename: "erg",
             })
             .expect(422);
-
-          const queryObject = {
-            createdBy: newUser.id,
-          };
-
-          const gameboard = await Gameboard.findOne(queryObject);
-
-          if (gameboard?.image) {
-            await fs.unlink(gameboard.image);
-          }
         });
       });
     });
