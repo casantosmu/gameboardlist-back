@@ -1,5 +1,5 @@
-import { Gameboard } from "../types/gameboard";
-import { User } from "../types/user";
+import { Gameboard } from "../../types/gameboard";
+import { User } from "../../types/user";
 
 export const fakeGameboard: Gameboard = {
   id: "2",

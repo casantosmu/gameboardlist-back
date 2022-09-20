@@ -1,8 +1,8 @@
-import "../../test-utils/supertestSetup";
+import "../../utils/test-utils/supertestSetup";
 import request from "supertest";
 import { HydratedDocument } from "mongoose";
 import app from "..";
-import { fakeGameboard, fakeUser } from "../../test-utils/fakeData";
+import { fakeGameboard, fakeUser } from "../../utils/test-utils/fakeData";
 import { User as IUser, UserPayload } from "../../types/user";
 import { getToken } from "../../utils/authentication";
 import "../../loadEnvironment";
@@ -55,7 +55,7 @@ describe("Given the gameRouter", () => {
           .field("time[min]", fakeGameboard.time.min)
           .field("time[max]", fakeGameboard.time.max)
           .field("authorship", fakeGameboard.authorship || "-")
-          .attach("image", "./src/test-utils/images.jpg")
+          .attach("image", "./src/utils/test-utils/images.jpg")
           .expect(201);
       });
 

@@ -1,4 +1,4 @@
-import "../../test-utils/supertestSetup";
+import "../../utils/test-utils/supertestSetup";
 import request from "supertest";
 import app from "..";
 

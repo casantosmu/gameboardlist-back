@@ -1,7 +1,7 @@
 import "../../loadEnvironment";
 import { Request, Response } from "express";
 import Gameboard from "../../database/models/Gameboard";
-import { fakeGameboard } from "../../test-utils/fakeData";
+import { fakeGameboard } from "../../utils/test-utils/fakeData";
 import {
   deleteGameboard,
   getGameboard,
